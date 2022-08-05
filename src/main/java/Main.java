@@ -1,51 +1,47 @@
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
         final ProducerConsumer produceConsume = new ProducerConsumer();
-
-        final int timeUntilTheEnd = 1_000;
+        final int sleepTime = 500;
 
         ThreadGroup group = new ThreadGroup("Группа");
+        
+        new Thread(group, () -> {
+            try {
+                produceConsume.concume();
+            } catch (InterruptedException e) {
+                Thread.currentThread().isInterrupted();
+            }
+        }, "one").start();
 
-        while (produceConsume.howManyCarsBuy < 5) {
+        new Thread(group, () -> {
+            try {
+                produceConsume.concume();
+            } catch (InterruptedException e) {
+                Thread.currentThread().isInterrupted();
+            }
+        }, "two").start();
 
-            new Thread(group, () -> {
-                try {
-                    produceConsume.concume();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().isInterrupted();
-                }
-            }, "one").start();
+        new Thread(group, () -> {
+            try {
+                produceConsume.concume();
+            } catch (InterruptedException e) {
+                Thread.currentThread().isInterrupted();
+            }
+        }, "three").start();
 
-            new Thread(group, () -> {
-                try {
-                    produceConsume.concume();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().isInterrupted();
-                }
-            }, "two").start();
-
-            new Thread(group, () -> {
-                try {
-                    produceConsume.concume();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().isInterrupted();
-                }
-            }, "three").start();
-
-            new Thread(group, () -> {
-                try {
-                    produceConsume.produce();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().isInterrupted();
-                }
-            }, "Toyota").start();
-
-        }
-        Thread.sleep(timeUntilTheEnd);
-        group.interrupt();
+        new Thread(group, () -> {
+            try {
+                Thread.sleep(sleepTime);
+                produceConsume.produce();
+            } catch (InterruptedException e) {
+                Thread.currentThread().isInterrupted();
+            }
+        }, "Toyota").start();
     }
 }
+
+
 
 
