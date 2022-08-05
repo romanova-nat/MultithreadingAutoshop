@@ -1,16 +1,15 @@
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args)  {
         final ProducerConsumer produceConsume = new ProducerConsumer();
-        final int timeUntilTheEnd = 1_000;
+        final int ALL_LIMIT = 5; // салон должен выпустить максимум 5 авто
 
         ThreadGroup group = new ThreadGroup("Группа");
 
-        while (produceConsume.howManyCarsBuy < 5) {
-
+        while (produceConsume.howManyCarsBuy < ALL_LIMIT) {
             new Thread(group, () -> {
                 try {
-                    produceConsume.concume();
+                    produceConsume.concumeCar();
                 } catch (InterruptedException e) {
                     Thread.currentThread().isInterrupted();
                 }
@@ -18,7 +17,7 @@ public class Main {
 
             new Thread(group, () -> {
                 try {
-                    produceConsume.concume();
+                    produceConsume.concumeCar();
                 } catch (InterruptedException e) {
                     Thread.currentThread().isInterrupted();
                 }
@@ -26,7 +25,7 @@ public class Main {
 
             new Thread(group, () -> {
                 try {
-                    produceConsume.concume();
+                    produceConsume.concumeCar();
                 } catch (InterruptedException e) {
                     Thread.currentThread().isInterrupted();
                 }
@@ -34,16 +33,12 @@ public class Main {
 
             new Thread(group, () -> {
                 try {
-                    produceConsume.produce();
+                    produceConsume.produceCar();
                 } catch (InterruptedException e) {
                     Thread.currentThread().isInterrupted();
                 }
             }, "Toyota").start();
-
         }
-        Thread.sleep(timeUntilTheEnd);
         group.interrupt();
     }
 }
-
-
