@@ -48,7 +48,7 @@ public class ProducerConsumer {
             System.out.print("Покупатель " + Thread.currentThread().getName() + " уехал на новом авто. ");
             System.out.println("Куплено " + howManyCarsBuy + " авто");
             System.out.println("Остальные ждут");
-            carForSale.clear();
+            carForSale.remove(0);
             conditionBay.signal();
         } finally {
             lock.unlock();
